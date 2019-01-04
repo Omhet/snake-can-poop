@@ -1,3 +1,5 @@
+let count = 0;
+
 class Snake {
     constructor() {
         this.y = 0;
@@ -6,12 +8,13 @@ class Snake {
         this.yspeed = 0;
         this.total = 0;
         this.tail = [];
+        this.poops = [];
     }
 
     eat(pos) {
         var d = dist(this.x, this.y, pos.x, pos.y);
         if (d < scl) {
-            this.total++;
+            this.total += growRate;
             return true;
         } else {
             return false;
@@ -23,15 +26,34 @@ class Snake {
         this.yspeed = y;
     }
 
+    end() {
+        console.log('starting over');
+        this.total = 0;
+        this.tail = [];
+    }
+
     death() {
-        for (var i = 0; i < this.tail.length; i++) {
-            var pos = this.tail[i];
-            var d = dist(this.x, this.y, pos.x, pos.y);
+        for (let i = 0; i < this.tail.length; i++) {
+            const pos = this.tail[i];
+            const d = dist(this.x, this.y, pos.x, pos.y);
             if (d < 1) {
-                console.log('starting over');
-                this.total = 0;
-                this.tail = [];
+                this.end();
             }
+        }
+        // this.poops.forEach(p => {
+        //     const d = dist(this.x, this.y, p.x, p.y);
+        //     if (d < scl / 5) {
+        //         this.end();
+        //     }
+        // })
+    }
+
+    poop() {
+        if (this.tail.length > 0) {
+            const back = this.tail[0];
+            this.poops.push(createVector(back.x, back.y));
+            this.tail.pop();
+            this.total--;
         }
     }
 
@@ -43,8 +65,13 @@ class Snake {
             this.tail[this.total - 1] = createVector(this.x, this.y);
         }
 
-        this.x = floor(this.x + this.xspeed * scl / 5);
-        this.y = floor(this.y + this.yspeed * scl / 5);
+        // count++;
+        // if (count % 50 === 0) {
+        //     // console.log(this.tail);
+        // }
+
+        this.x = floor(this.x + this.xspeed * scl / 7);
+        this.y = floor(this.y + this.yspeed * scl / 7);
 
         this.x = constrain(this.x, 0, width - scl);
         this.y = constrain(this.y, 0, height - scl);
@@ -53,9 +80,9 @@ class Snake {
     show() {
         fill(255);
         for (var i = 0; i < this.tail.length; i++) {
-            rect(this.tail[i].x, this.tail[i].y, scl, scl);
+            image(snakeBody, this.tail[i].x, this.tail[i].y);
         }
-        rect(this.x, this.y, scl, scl);
+        image(snakeBody, this.x, this.y);
 
     }
 }

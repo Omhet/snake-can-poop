@@ -2,6 +2,15 @@ let s;
 let scl = 20;
 
 let food;
+let growRate = 1;
+
+let snakeBody, orange;
+
+function preload() {
+    snakeBody = loadImage('images/body.png')
+    orange = loadImage('images/orange.png')
+    poop = loadImage('images/poop.png')
+}
 
 function setup() {
     createCanvas(600, 600);
@@ -18,7 +27,7 @@ function pickLocation() {
 }
 
 function mousePressed() {
-    s.total++;
+    s.total += 1;
 }
 
 function draw() {
@@ -27,13 +36,18 @@ function draw() {
     if (s.eat(food)) {
         pickLocation();
     }
+
     s.death();
     s.update();
     s.show();
 
-
     fill(255, 0, 100);
-    rect(food.x, food.y, scl, scl);
+
+    // Draw food
+    image(orange, food.x, food.y, 24, 24);
+
+    // Draw poops
+    s.poops.forEach(p => image(poop, p.x, p.y, 24, 24));
 }
 
 function keyPressed() {
@@ -45,5 +59,8 @@ function keyPressed() {
         s.dir(1, 0);
     } else if (keyCode === LEFT_ARROW) {
         s.dir(-1, 0);
-    }
+    } else if (keyCode === 32) {
+        s.poop();
+    } 
+    
 }
