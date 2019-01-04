@@ -70,8 +70,8 @@ class Snake {
         //     // console.log(this.tail);
         // }
 
-        this.x = floor(this.x + this.xspeed * scl / 7);
-        this.y = floor(this.y + this.yspeed * scl / 7);
+        this.x = floor(this.x + this.xspeed * scl / 5);
+        this.y = floor(this.y + this.yspeed * scl / 5);
 
         this.x = constrain(this.x, 0, width - scl);
         this.y = constrain(this.y, 0, height - scl);
