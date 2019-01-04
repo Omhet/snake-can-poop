@@ -31,15 +31,35 @@ function pickLocation() {
 }
 
 function spawnDevil() {
+    const spawn = floor(random(4));
     const cols = floor(width / scl);
     const rows = floor(height / scl);
-    devilVec = createVector(0, floor(random(rows)));
+    const randomRow = floor(random(rows));
+    const randomCol = floor(random(cols));
+    let devilVec;
+
+    switch (spawn) {
+        case 0:
+            devilVec = createVector(0, randomRow);
+            break;
+        case 1:
+            devilVec = createVector(randomCol, 0);
+            break;
+        case 2:
+            devilVec = createVector(cols, randomRow);
+            break;
+        case 3:
+            devilVec = createVector(randomCol, rows);
+            break;
+    }
+
     devilVec.mult(scl);
-    devils.push(new Devil(devilVec.x, devilVec.y));
+    devils.push(new Devil(devilVec.x, devilVec.y, spawn));
 }
 
 function mousePressed() {
-    s.total += 1;
+    // s.total += 1;
+    spawnDevil();
 }
 
 function draw() {
@@ -62,6 +82,11 @@ function draw() {
     s.poops.forEach(p => {
         if (p.alive) {
             image(poop, p.x, p.y, 24, 24)
+            devils.forEach(d => {
+                if (d.death(p)) {
+                    p.alive = false;
+                }
+            });
         }
     });
     s.poops = s.poops.filter(p => p.alive);
@@ -74,6 +99,16 @@ function draw() {
     devils.forEach(d => {
         if (d.alive) {
             image(devil, d.x, d.y, 24, 24)
+            d.move();
+            if (d.death(s)) {
+                s.end();
+            }
+            s.tail.forEach(t => {
+                if (d.death(t)) {
+                    s.end();
+                } 
+            })
+            d.far();
         }
     });
     devils = devils.filter(d => d.alive);
@@ -90,6 +125,11 @@ function keyPressed() {
         s.dir(-1, 0);
     } else if (keyCode === 32) {
         s.poop();
+    } else if (keyCode === 87) {
+        s.total++;
+    } else if (keyCode === 83) {
+        spawnDevil();
     } 
-    
+
+
 }
