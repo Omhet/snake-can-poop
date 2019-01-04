@@ -6,6 +6,7 @@ class Snake {
         this.x = 0;
         this.xspeed = 1;
         this.yspeed = 0;
+        this.alive = true;
         this.total = 0;
         this.tail = [];
         this.poops = [];
@@ -30,6 +31,7 @@ class Snake {
         console.log('starting over');
         this.total = 0;
         this.tail = [];
+        this.alive = false;
     }
 
     death() {

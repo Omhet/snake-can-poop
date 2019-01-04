@@ -18,6 +18,8 @@ function preload() {
 
 function setup() {
     createCanvas(600, 600);
+    textAlign(CENTER);
+    textSize(72);
     s = new Snake();
     frameRate(40);
     pickLocation();
@@ -112,6 +114,11 @@ function draw() {
         }
     });
     devils = devils.filter(d => d.alive);
+
+    if (!s.alive) {
+        background(51);
+        text('Game over', width / 2, height / 2);
+    }
 }
 
 function keyPressed() {
