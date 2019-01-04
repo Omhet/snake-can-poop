@@ -47,7 +47,13 @@ function draw() {
     image(orange, food.x, food.y, 24, 24);
 
     // Draw poops
-    s.poops.forEach(p => image(poop, p.x, p.y, 24, 24));
+    s.poops.forEach(p => {
+        if (p.alive) {
+            image(poop, p.x, p.y, 24, 24)
+        }
+    });
+
+    s.poops = s.poops.filter(p => p.alive);
 }
 
 function keyPressed() {

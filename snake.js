@@ -51,7 +51,7 @@ class Snake {
     poop() {
         if (this.tail.length > 0) {
             const back = this.tail[0];
-            this.poops.push(createVector(back.x, back.y));
+            this.poops.push(new Poop(back.x, back.y));
             this.tail.pop();
             this.total--;
         }
