@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
-    <title>Snake</title>
+    <title>Snake Can Poop</title>
 </head>
+
 <body>
+    <div id="score-bar">
+        <div id="food-score">
+            <img src="images/orange.png" />
+            <span>0</span>
+        </div>
+        <div id="devils-score">
+            <img src="images/devil.png" />
+            <span>0</span>
+        </div>
+        <div id="body-score">
+            <img src="images/body.png" />
+            <span>0</span>
+        </div>
+    </div>
     <div id="restart"></div>
     <script src="devil.js"></script>
     <script src="poop.js"></script>
     <script src="snake.js"></script>
     <script src="code.js"></script>
 </body>
+
 </html>
