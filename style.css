@@ -10,12 +10,11 @@ body, html {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-#restart {
+.btn {
     position: absolute;
     top: 60%;
     cursor: pointer;
     border-radius: 50%;
-    background: url(images/restart.png);
     width: 128px;
     height: 128px;
     background-size: 100%;
@@ -24,15 +23,28 @@ body, html {
     transition: all .3s;
 }
 
-#restart.show {
+#restart {
+    background: url(images/restart.png);
+}
+
+#start {
+    background: url(images/start.png);
+}
+
+.btn.show {
     display: block;
+}
+
+#restart.show {
     animation: rotate 1s ease-in-out .75s forwards, show 1s ease-in-out forwards;
 }
 
-#restart.show:hover {
-    width: 136px;
-    height: 136px;
+#start.show {
+    animation: show 1s ease-in-out forwards;
 }
+
+/* .btn.show:hover {
+} */
 
 @keyframes show {
         from {
@@ -60,6 +72,11 @@ body, html {
     color: aliceblue;
     font-size: 2rem;
     text-align: center;
+    display: none;
+}
+
+#score-bar.show {
+    display: flex;
 }
 
 #score-bar > * {

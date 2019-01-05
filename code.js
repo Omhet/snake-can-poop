@@ -1,16 +1,31 @@
+let gameStarted = false;
+
 let s;
 let scl = 20;
 
 let food;
 let growRate = 1;
+let bodyGrow = 0;
 
 let snakeBody, orange, poop, devil, restart;
 
 let devils = [];
 
+const scoreBar = document.getElementById('score-bar');
 const foodScore = document.getElementById('food-score');
 const devilsScore = document.getElementById('devils-score');
 const bodyScore = document.getElementById('body-score');
+
+const startButton = document.getElementById('start');
+startButton.onclick = (e) => {
+    gameStarted = true;
+    startButton.classList.remove('show');
+    foodScore.innerText = 0;
+    devilsScore.innerText = 0;
+    bodyScore.innerText = 0;
+    scoreBar.classList.add('show');
+    loop();
+}
 
 const restartButton = document.getElementById('restart');
 restartButton.onclick = (e) => {
@@ -24,6 +39,8 @@ restartButton.onclick = (e) => {
     s.poops = [];
     devils = [];
     restartButton.classList.remove('show');
+
+    loop();
 }
 
 function preload() {
@@ -35,7 +52,20 @@ function preload() {
 }
 
 function setup() {
+    window.loop = loop;
+
+    const scoreStr = localStorage.getItem('score');
+    if (scoreStr) {
+        const score = JSON.parse(scoreStr);
+        foodScore.innerText = score.food;
+        devilsScore.innerText = score.devils;
+        bodyScore.innerText = score.body;
+        scoreBar.classList.add('show');
+    }
+
     createCanvas(600, 600);
+    noLoop();
+    startButton.classList.add('show');
     textAlign(CENTER);
     textSize(72);
     s = new Snake();
@@ -83,6 +113,13 @@ function mousePressed() {
 function draw() {
     background(51);
 
+    if (!gameStarted) {
+        textSize(64);
+        fill(240, 248, 255);
+        text('Snake Can Poop', width / 2, height / 2);
+        return;
+    }
+
     if (s.eat(food)) {
         foodScore.innerText++;
         pickLocation();
@@ -93,7 +130,6 @@ function draw() {
     s.show();
     bodyScore.innerText = s.tail.length;
 
-    fill(255, 0, 100);
 
     // Draw food
     image(orange, food.x, food.y, 24, 24);
@@ -136,7 +172,32 @@ function draw() {
 
     if (!s.alive) {
         background(51);
+        textSize(72);
+        fill(255, 0, 100);
         text('Game over', width / 2, height / 2);
+        noLoop();
+
+        bodyScore.innerText = bodyGrow;
+
+        let maxScore;
+        const scoreStr = localStorage.getItem('score');
+        if (scoreStr) {
+            maxScore = JSON.parse(scoreStr);
+        }
+
+        const score = maxScore ? {
+            food: Math.max(foodScore.innerText, maxScore.food),
+            devils: Math.max(devilsScore.innerText, maxScore.devils),
+            body: Math.max(bodyGrow, maxScore.body)
+        } : {
+            food: foodScore.innerText,
+            devils: devilsScore.innerText,
+            body: bodyGrow
+        };
+
+        const scoreToSave = JSON.stringify(score);
+        localStorage.setItem('score', scoreToSave);
+
         if (!restartButton.classList.contains('show')) {
             restartButton.classList.add('show');
         }

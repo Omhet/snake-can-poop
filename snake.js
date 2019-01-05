@@ -29,6 +29,7 @@ class Snake {
 
     end() {
         console.log('starting over');
+        bodyGrow = this.tail.length;
         this.total = 0;
         this.tail = [];
         this.alive = false;
