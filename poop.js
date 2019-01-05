@@ -4,6 +4,6 @@ class Poop {
         this.y = y;
         this.alive = true;
 
-        setTimeout(() => this.alive = false, 5000);
+        setTimeout(() => this.alive = false, 10000);
     }
 }

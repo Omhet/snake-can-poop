@@ -8,11 +8,20 @@ let snakeBody, orange, poop, devil, restart;
 
 let devils = [];
 
+const foodScore = document.getElementById('food-score');
+const devilsScore = document.getElementById('devils-score');
+const bodyScore = document.getElementById('body-score');
+
 const restartButton = document.getElementById('restart');
 restartButton.onclick = (e) => {
+    foodScore.innerText = '0';
+    devilsScore.innerText = '0';
+    bodyScore.innerText = '0';
+
     s.alive = true;
     s.x = width / 2;
     s.y = height / 2;
+    s.poops = [];
     devils = [];
     restartButton.classList.remove('show');
 }
@@ -69,19 +78,20 @@ function spawnDevil() {
 }
 
 function mousePressed() {
-    console.log(restartButton);
 }
 
 function draw() {
     background(51);
 
     if (s.eat(food)) {
+        foodScore.innerText++;
         pickLocation();
     }
 
     s.death();
     s.update();
     s.show();
+    bodyScore.innerText = s.tail.length;
 
     fill(255, 0, 100);
 
@@ -94,6 +104,7 @@ function draw() {
             image(poop, p.x, p.y, 24, 24)
             devils.forEach(d => {
                 if (d.death(p)) {
+                    devilsScore.innerText++;
                     p.alive = false;
                 }
             });
