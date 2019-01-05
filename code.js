@@ -4,16 +4,22 @@ let scl = 20;
 let food;
 let growRate = 1;
 
-let snakeBody, orange, poop, devil;
+let snakeBody, orange, poop, devil, restart;
 
 let devils = [];
-// let devilsTotal = 0
+
+const restartButton = document.getElementById('restart');
+restartButton.onclick = (e) => {
+    s.alive = true;
+    restartButton.classList.remove('show');
+}
 
 function preload() {
-    snakeBody = loadImage('images/body.png')
-    orange = loadImage('images/orange.png')
-    poop = loadImage('images/poop.png')
-    devil = loadImage('images/devil.png')
+    snakeBody = loadImage('images/body.png');
+    orange = loadImage('images/orange.png');
+    poop = loadImage('images/poop.png');
+    devil = loadImage('images/devil.png');
+    restart = loadImage('images/restart.png');
 }
 
 function setup() {
@@ -60,8 +66,7 @@ function spawnDevil() {
 }
 
 function mousePressed() {
-    // s.total += 1;
-    spawnDevil();
+    console.log(restartButton);
 }
 
 function draw() {
@@ -118,6 +123,9 @@ function draw() {
     if (!s.alive) {
         background(51);
         text('Game over', width / 2, height / 2);
+        if (!restartButton.classList.contains('show')) {
+            restartButton.classList.add('show');
+        }
     }
 }
 
