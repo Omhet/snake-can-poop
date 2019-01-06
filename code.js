@@ -1,13 +1,14 @@
 let gameStarted = false;
+const fps = 10;
 
 let s;
-let scl = 20;
+let scl = 24;
 
 let food;
 let growRate = 1;
 let bodyGrow = 0;
 
-let snakeBody, orange, poop, devil, restart;
+let snakeBody, snakeHead, orange, poop, devil, restart;
 
 let devils = [];
 
@@ -45,6 +46,7 @@ restartButton.onclick = (e) => {
 
 function preload() {
     snakeBody = loadImage('images/body.png');
+    snakeHead = loadImage('images/head.png');
     orange = loadImage('images/orange.png');
     poop = loadImage('images/poop.png');
     devil = loadImage('images/devil.png');
@@ -63,14 +65,25 @@ function setup() {
         scoreBar.classList.add('show');
     }
 
-    createCanvas(600, 600);
+    let canvas;
+    canvas = innerWidth >= 900 ? createCanvas(900, 600) : createCanvas(innerWidth, innerHeight - 48);
+    canvas.parent('game');
+
     noLoop();
     startButton.classList.add('show');
     textAlign(CENTER);
     textSize(72);
     s = new Snake();
-    frameRate(40);
+    frameRate(fps);
     pickLocation();
+}
+
+function windowResized() {
+    if (innerWidth >= 900) {
+        resizeCanvas(900, 600);
+    } else {
+        resizeCanvas(innerWidth, innerHeight - 48);
+    }
 }
 
 function pickLocation() {
@@ -132,12 +145,12 @@ function draw() {
 
 
     // Draw food
-    image(orange, food.x, food.y, 24, 24);
+    image(orange, food.x, food.y, scl, scl);
 
     // Draw poops
     s.poops.forEach(p => {
         if (p.alive) {
-            image(poop, p.x, p.y, 24, 24)
+            image(poop, p.x, p.y, scl, scl)
             devils.forEach(d => {
                 if (d.death(p)) {
                     devilsScore.innerText++;
@@ -155,7 +168,7 @@ function draw() {
     // Draw devils
     devils.forEach(d => {
         if (d.alive) {
-            image(devil, d.x, d.y, 24, 24)
+            image(devil, d.x, d.y, scl, scl)
             d.move();
             if (d.death(s)) {
                 s.end();
@@ -163,7 +176,7 @@ function draw() {
             s.tail.forEach(t => {
                 if (d.death(t)) {
                     s.end();
-                } 
+                }
             })
             d.far();
         }
@@ -190,10 +203,10 @@ function draw() {
             devils: Math.max(devilsScore.innerText, maxScore.devils),
             body: Math.max(bodyGrow, maxScore.body)
         } : {
-            food: foodScore.innerText,
-            devils: devilsScore.innerText,
-            body: bodyGrow
-        };
+                food: foodScore.innerText,
+                devils: devilsScore.innerText,
+                body: bodyGrow
+            };
 
         const scoreToSave = JSON.stringify(score);
         localStorage.setItem('score', scoreToSave);
@@ -206,20 +219,20 @@ function draw() {
 
 function keyPressed() {
     if (keyCode === UP_ARROW && s.xspeed) {
-        s.dir(0, -1);
-    } else if (keyCode === DOWN_ARROW  && s.xspeed) {
-        s.dir(0, 1);
+        s.dir(0, -1 * speed);
+    } else if (keyCode === DOWN_ARROW && s.xspeed) {
+        s.dir(0, speed);
     } else if (keyCode === RIGHT_ARROW && s.yspeed) {
-        s.dir(1, 0);
+        s.dir(speed, 0);
     } else if (keyCode === LEFT_ARROW && s.yspeed) {
-        s.dir(-1, 0);
+        s.dir(-1 * speed, 0);
     } else if (keyCode === 32) {
         s.poop();
     } else if (keyCode === 87) {
         s.total++;
     } else if (keyCode === 83) {
         spawnDevil();
-    } 
+    }
 
 
 }

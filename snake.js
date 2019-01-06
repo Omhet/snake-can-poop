@@ -1,10 +1,11 @@
 let count = 0;
+let speed = 0.7;
 
 class Snake {
     constructor() {
         this.y = 0;
         this.x = 0;
-        this.xspeed = 1;
+        this.xspeed = speed;
         this.yspeed = 0;
         this.alive = true;
         this.total = 0;
@@ -43,12 +44,6 @@ class Snake {
                 this.end();
             }
         }
-        // this.poops.forEach(p => {
-        //     const d = dist(this.x, this.y, p.x, p.y);
-        //     if (d < scl / 5) {
-        //         this.end();
-        //     }
-        // })
     }
 
     poop() {
@@ -68,13 +63,8 @@ class Snake {
             this.tail[this.total - 1] = createVector(this.x, this.y);
         }
 
-        // count++;
-        // if (count % 50 === 0) {
-        //     // console.log(this.tail);
-        // }
-
-        this.x = floor(this.x + this.xspeed * scl / 5);
-        this.y = floor(this.y + this.yspeed * scl / 5);
+        this.x = floor(this.x + this.xspeed * scl);
+        this.y = floor(this.y + this.yspeed * scl);
 
         this.x = constrain(this.x, 0, width - scl);
         this.y = constrain(this.y, 0, height - scl);
@@ -83,9 +73,11 @@ class Snake {
     show() {
         fill(255);
         for (var i = 0; i < this.tail.length; i++) {
-            image(snakeBody, this.tail[i].x, this.tail[i].y);
+            if (i === 0) 
+                image(snakeHead, this.tail[i].x + 4, this.tail[i].y + 4, 16, 16);
+            else 
+                image(snakeBody, this.tail[i].x, this.tail[i].y, scl, scl);
         }
-        image(snakeBody, this.x, this.y);
-
+        image(snakeHead, this.x - 4, this.y - 4, 32, 32);
     }
 }

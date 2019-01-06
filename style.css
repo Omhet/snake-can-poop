@@ -8,6 +8,8 @@ body, html {
     align-items: center;
     justify-content: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .btn {
@@ -65,7 +67,7 @@ body, html {
 }
 
 #score-bar {
-    width: 600px;
+    width: 100%;
     height: 3rem;
     display: flex;
     background-color: #222;
