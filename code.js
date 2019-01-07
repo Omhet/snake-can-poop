@@ -1,6 +1,8 @@
 let gameStarted = false;
 const fps = 30;
 
+const minWidth = 900;
+
 let s;
 let scl = 24;
 
@@ -68,7 +70,7 @@ function setup() {
     }
 
     let canvas;
-    canvas = innerWidth >= 900 ? createCanvas(900, 600) : createCanvas(innerWidth, innerHeight - 48);
+    canvas = innerWidth >= minWidth ? createCanvas(minWidth, 600) : createCanvas(innerWidth, innerHeight - 48);
     canvas.parent('game');
 
     noLoop();
@@ -80,10 +82,10 @@ function setup() {
 }
 
 function windowResized() {
-    if (innerWidth >= 900) {
-        resizeCanvas(900, 600);
+    if (innerWidth >= minWidth) {
+        resizeCanvas(minWidth, 600);
     } else {
-        resizeCanvas(innerWidth, innerHeight - 48);
+        resizeCanvas(innerWidth, innerHeight - 32);
     }
 }
 
@@ -162,9 +164,9 @@ function draw() {
     });
     s.poops = s.poops.filter(p => p.alive);
 
-    // while (devils.length < floor(s.total / 2)) {
-    //     // spawnDevil();
-    // }
+    while (devils.length < floor(s.total / 2)) {
+        spawnDevil();
+    }
 
     // Draw devils
     devils.forEach(d => {
