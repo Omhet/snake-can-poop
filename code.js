@@ -1,5 +1,5 @@
 let gameStarted = false;
-const fps = 10;
+const fps = 30;
 
 let s;
 let scl = 24;
@@ -25,6 +25,7 @@ startButton.onclick = (e) => {
     devilsScore.innerText = 0;
     bodyScore.innerText = 0;
     scoreBar.classList.add('show');
+    s.total++;
     loop();
 }
 
@@ -40,7 +41,7 @@ restartButton.onclick = (e) => {
     s.poops = [];
     devils = [];
     restartButton.classList.remove('show');
-
+    s.total++;
     loop();
 }
 
@@ -55,6 +56,7 @@ function preload() {
 
 function setup() {
     window.loop = loop;
+    s = new Snake();
 
     const scoreStr = localStorage.getItem('score');
     if (scoreStr) {
@@ -73,7 +75,6 @@ function setup() {
     startButton.classList.add('show');
     textAlign(CENTER);
     textSize(72);
-    s = new Snake();
     frameRate(fps);
     pickLocation();
 }
@@ -141,7 +142,7 @@ function draw() {
     s.death();
     s.update();
     s.show();
-    bodyScore.innerText = s.tail.length;
+    bodyScore.innerText = s.tail.length - 1;
 
 
     // Draw food
@@ -161,9 +162,9 @@ function draw() {
     });
     s.poops = s.poops.filter(p => p.alive);
 
-    while (devils.length < floor(s.total / 2)) {
-        spawnDevil();
-    }
+    // while (devils.length < floor(s.total / 2)) {
+    //     // spawnDevil();
+    // }
 
     // Draw devils
     devils.forEach(d => {
@@ -215,6 +216,13 @@ function draw() {
             restartButton.classList.add('show');
         }
     }
+
+    // textSize(24);
+    // text(rotationX, width / 2, height / 2)
+}
+
+function deviceTurned() {
+    
 }
 
 function keyPressed() {

@@ -2,7 +2,7 @@ class Devil {
     constructor(x, y, spawn) {
         this.x = x;
         this.y = y;
-        this.speed = 5;
+        this.speed = 4;
         this.spawn = spawn;
         this.alive = true;
     }
@@ -19,16 +19,16 @@ class Devil {
     far() {
         switch (this.spawn) {
             case 0:
-                this.alive = this.x < width;
+                this.spawn = this.x < width ? 0 : 2;
                 break;
             case 1:
-                this.alive = this.y < height;
+                this.spawn = this.y < height ? 1 : 3;
                 break;
             case 2:
-                this.alive = this.x > 0;
+                this.spawn = this.x > 0 ? 2 : 0;
                 break;
             case 3:
-                this.alive = this.y > 0;
+                this.spawn = this.y > 0 ? 3 : 1;
                 break;
         }
     }

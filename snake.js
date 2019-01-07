@@ -1,5 +1,5 @@
 let count = 0;
-let speed = 0.7;
+let speed = 0.25;
 
 class Snake {
     constructor() {
@@ -29,8 +29,8 @@ class Snake {
     }
 
     end() {
-        console.log('starting over');
-        bodyGrow = this.tail.length;
+        console.log('game over');
+        bodyGrow = this.tail.length - 1;
         this.total = 0;
         this.tail = [];
         this.alive = false;
@@ -47,7 +47,7 @@ class Snake {
     }
 
     poop() {
-        if (this.tail.length > 0) {
+        if (this.tail.length > 1) {
             const back = this.tail[0];
             this.poops.push(new Poop(back.x, back.y));
             this.tail.pop();
@@ -57,7 +57,10 @@ class Snake {
 
     update() {
         for (var i = 0; i < this.tail.length - 1; i++) {
-            this.tail[i] = this.tail[i + 1];
+            const cur = this.tail[i];
+            const next = this.tail[i + 1];
+            cur.x = next.x - this.xspeed * scl;
+            cur.y = next.y - this.yspeed * scl;
         }
         if (this.total >= 1) {
             this.tail[this.total - 1] = createVector(this.x, this.y);
@@ -73,10 +76,12 @@ class Snake {
     show() {
         fill(255);
         for (var i = 0; i < this.tail.length; i++) {
-            if (i === 0) 
+            if (i === 0) {
                 image(snakeHead, this.tail[i].x + 4, this.tail[i].y + 4, 16, 16);
-            else 
+            }
+            else {
                 image(snakeBody, this.tail[i].x, this.tail[i].y, scl, scl);
+            }
         }
         image(snakeHead, this.x - 4, this.y - 4, 32, 32);
     }
