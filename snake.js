@@ -11,6 +11,7 @@ class Snake {
         this.total = 0;
         this.tail = [];
         this.poops = [];
+        this.canPoop = true;
     }
 
     eat(pos) {
@@ -41,13 +42,13 @@ class Snake {
             const pos = this.tail[i];
             const d = dist(this.x, this.y, pos.x, pos.y);
             if (d < 1) {
-                this.end();
+                // this.end();
             }
         }
     }
 
     poop() {
-        if (this.tail.length > 1) {
+        if (this.tail.length > 1 && this.canPoop) {
             const back = this.tail[0];
             this.poops.push(new Poop(back.x, back.y));
             this.tail.pop();
@@ -69,8 +70,14 @@ class Snake {
         this.x = floor(this.x + this.xspeed * scl);
         this.y = floor(this.y + this.yspeed * scl);
 
-        this.x = constrain(this.x, 0, width - scl);
-        this.y = constrain(this.y, 0, height - scl);
+        // this.x = constrain(this.x, 0, width - scl);
+        // this.y = constrain(this.y, 0, height - scl);
+
+        if (this.x > canvas.width) this.x = 0;
+        else if (this.x < 0) this.x = canvas.width;
+
+        if (this.y > canvas.height) this.y = 0;
+        else if (this.y < 0) this.y = canvas.height;
     }
 
     show() {
