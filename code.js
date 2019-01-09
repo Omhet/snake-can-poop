@@ -2,6 +2,7 @@ let gameStarted = false;
 const fps = 30;
 
 const minWidth = 900;
+let canvas;
 
 let s;
 let scl = 24;
@@ -18,6 +19,11 @@ const scoreBar = document.getElementById('score-bar');
 const foodScore = document.getElementById('food-score');
 const devilsScore = document.getElementById('devils-score');
 const bodyScore = document.getElementById('body-score');
+const game = document.getElementById('game');
+
+game.onclick = () => {
+    s.poop();
+}
 
 const startButton = document.getElementById('start');
 startButton.onclick = (e) => {
@@ -47,6 +53,7 @@ restartButton.onclick = (e) => {
     loop();
 }
 
+
 function preload() {
     snakeBody = loadImage('images/body.png');
     snakeHead = loadImage('images/head.png');
@@ -69,7 +76,6 @@ function setup() {
         scoreBar.classList.add('show');
     }
 
-    let canvas;
     canvas = innerWidth >= minWidth ? createCanvas(minWidth, 600) : createCanvas(innerWidth, innerHeight - 48);
     canvas.parent('game');
 
@@ -123,7 +129,13 @@ function spawnDevil() {
     devils.push(new Devil(devilVec.x, devilVec.y, spawn));
 }
 
-function mousePressed() {
+function touchStarted() {
+    // s.poop();
+    // s.canPoop = false;
+}
+
+function touchEnded() {
+    // s.canPoop = true;
 }
 
 function draw() {
@@ -219,12 +231,43 @@ function draw() {
         }
     }
 
-    // textSize(24);
-    // text(rotationX, width / 2, height / 2)
+    if (innerWidth < minWidth && rotationX !== null && rotationY !== null) {
+        textSize(24);
+        // const x = floor(rotationX) === 0 ? 0 : rotationX < 0 ? -0.25 : 0.25;
+        // const y = floor(rotationY) === -40 ? 0 : rotationY < -40 ? 0.25 : -0.25;
+        const frx = floor(rotationX);
+        const fry = floor(rotationY);
+        let speed = 0.2;
+        let x, y = 0;
+        const xc = 7;
+        const yc = 55;
+
+        if (frx > -xc && frx < xc) x = 0;
+        else if (frx <= -xc) x = -speed;
+        else if (frx >= xc) x = speed;
+
+        if (fry > -yc && fry < -35) y = 0;
+        else if (fry <= -yc) y = speed;
+        else if (fry >= -35) y = -speed;
+
+        if (x === 0 && y === 0) {
+            x = s.xspeed;
+            y = s.yspeed;
+        } else if (x !== 0 && y !== 0) {
+            y = 0;
+        }
+
+        // text('x' + x, width / 2, height / 2)
+        // text('y' + y, width / 2, height / 2 + 32)
+
+        s.dir(x, y);
+    }
+
+
 }
 
 function deviceTurned() {
-    
+
 }
 
 function keyPressed() {
